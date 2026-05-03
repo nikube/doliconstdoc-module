@@ -75,38 +75,54 @@ class DoliConstDoc
 	 */
 	public function fetchList($filters = array(), $sortfield = 'name', $sortorder = 'asc', $limit = 50, $offset = 0)
 	{
+		$entity = !empty($filters['entity']) ? (int) $filters['entity'] : 1;
+		$stateFlt = !empty($filters['state']) ? (string) $filters['state'] : '';
+
+		$from = " FROM ".MAIN_DB_PREFIX.self::TABLE." c";
+		if ($stateFlt !== '') {
+			$from .= " LEFT JOIN ".MAIN_DB_PREFIX."const k ON k.name = c.name AND k.entity = ".$entity;
+		}
+
 		$where = ' WHERE 1=1';
+		if ($stateFlt === 'active') {
+			$where .= " AND k.value IS NOT NULL AND k.value <> '' AND NOT (LOWER(c.type) IN ('bool','boolean') AND k.value = '0')";
+		} elseif ($stateFlt === 'inactive') {
+			$where .= " AND k.value IS NULL";
+		} elseif ($stateFlt === 'disabled') {
+			$where .= " AND k.value IS NOT NULL AND ((LOWER(c.type) IN ('bool','boolean') AND k.value = '0') OR k.value = '')";
+		}
+
 		if (!empty($filters['search'])) {
 			$q = $this->db->escape($filters['search']);
-			$where .= " AND (name LIKE '%".$q."%' OR purpose LIKE '%".$q."%' OR description LIKE '%".$q."%')";
+			$where .= " AND (c.name LIKE '%".$q."%' OR c.purpose LIKE '%".$q."%' OR c.description LIKE '%".$q."%')";
 		}
 		if (!empty($filters['search_name'])) {
 			$q = $this->db->escape($filters['search_name']);
-			$where .= " AND name LIKE '%".$q."%'";
+			$where .= " AND c.name LIKE '%".$q."%'";
 		}
 		if (!empty($filters['search_purpose'])) {
 			$q = $this->db->escape($filters['search_purpose']);
-			$where .= " AND (purpose LIKE '%".$q."%' OR description LIKE '%".$q."%')";
+			$where .= " AND (c.purpose LIKE '%".$q."%' OR c.description LIKE '%".$q."%')";
 		}
 		if (!empty($filters['module'])) {
-			$where .= " AND module = '".$this->db->escape($filters['module'])."'";
+			$where .= " AND c.module = '".$this->db->escape($filters['module'])."'";
 		}
 		if (!empty($filters['type'])) {
-			$where .= " AND type = '".$this->db->escape($filters['type'])."'";
+			$where .= " AND c.type = '".$this->db->escape($filters['type'])."'";
 		}
 		if (!empty($filters['hidden_only'])) {
-			$where .= " AND hidden_setting = 1";
+			$where .= " AND c.hidden_setting = 1";
 		} elseif (!empty($filters['standard_only'])) {
-			$where .= " AND hidden_setting = 0";
+			$where .= " AND c.hidden_setting = 0";
 		}
 
-		$allowedSort = array('name', 'module', 'type', 'doc_quality');
+		$allowedSort = array('name', 'module', 'type', 'doc_quality', 'hidden_setting');
 		if (!in_array($sortfield, $allowedSort, true)) {
 			$sortfield = 'name';
 		}
 		$sortorder = strtolower($sortorder) === 'desc' ? 'DESC' : 'ASC';
 
-		$totalSql = "SELECT COUNT(*) AS n FROM ".MAIN_DB_PREFIX.self::TABLE.$where;
+		$totalSql = "SELECT COUNT(*) AS n".$from.$where;
 		$total = 0;
 		$resT = $this->db->query($totalSql);
 		if ($resT) {
@@ -114,11 +130,11 @@ class DoliConstDoc
 			$total = (int) $objT->n;
 		}
 
-		$sql = "SELECT rowid, name, type, default_value, module, purpose, description, impact,";
-		$sql .= " possible_values, hidden_setting, hidden_setting_guess, admin_ui_files,";
-		$sql .= " conf_php_wiring, doc_quality, confidence";
-		$sql .= " FROM ".MAIN_DB_PREFIX.self::TABLE.$where;
-		$sql .= " ORDER BY ".$sortfield." ".$sortorder;
+		$sql = "SELECT c.rowid, c.name, c.type, c.default_value, c.module, c.purpose, c.description, c.impact,";
+		$sql .= " c.possible_values, c.hidden_setting, c.hidden_setting_guess, c.admin_ui_files,";
+		$sql .= " c.conf_php_wiring, c.doc_quality, c.confidence";
+		$sql .= $from.$where;
+		$sql .= " ORDER BY c.".$sortfield." ".$sortorder;
 		$sql .= " LIMIT ".((int) $limit)." OFFSET ".((int) $offset);
 
 		$rows = array();
