@@ -5,25 +5,26 @@
  */
 
 /**
- * \file    const_activate.php
+ * \file    admin/activate.php
  * \ingroup doliconstdoc
- * \brief   Activate / edit / delete a hidden setting.
+ * \brief   Activate / edit / delete a hidden setting. Admin only — writes
+ *          to llx_const.
  */
 
 $res = 0;
-if (!$res && file_exists("../../main.inc.php")) $res = @include "../../main.inc.php";
 if (!$res && file_exists("../../../main.inc.php")) $res = @include "../../../main.inc.php";
+if (!$res && file_exists("../../../../main.inc.php")) $res = @include "../../../../main.inc.php";
 if (!$res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once __DIR__.'/class/doliconstdoc.class.php';
-require_once __DIR__.'/lib/doliconstdoc.lib.php';
+require_once __DIR__.'/../class/doliconstdoc.class.php';
+require_once __DIR__.'/../lib/doliconstdoc.lib.php';
 
 /** @var Conf $conf @var DoliDB $db @var Translate $langs @var User $user */
 
 $langs->loadLangs(array("admin", "doliconstdoc@doliconstdoc"));
 
-if (!$user->hasRight('doliconstdoc', 'read') && !$user->admin) {
+if (!$user->admin) {
 	accessforbidden();
 }
 
@@ -31,13 +32,13 @@ $name = trim((string) GETPOST('name', 'alphanohtml'));
 $action = (string) GETPOST('action', 'aZ09');
 
 if ($name === '') {
-	header('Location: '.dol_buildpath('/doliconstdoc/browser.php', 1));
+	header('Location: '.dol_buildpath('/doliconstdoc/list.php', 1));
 	exit;
 }
 
 $c = new DoliConstDoc($db);
 if ($c->fetchByName($name) <= 0) {
-	header('Location: '.dol_buildpath('/doliconstdoc/browser.php', 1));
+	header('Location: '.dol_buildpath('/doliconstdoc/list.php', 1));
 	exit;
 }
 if ((int) $c->hidden_setting !== 1) {
@@ -62,7 +63,7 @@ if ($action === 'save' || $action === 'delete') {
 		} else {
 			setEventMessages($langs->trans('DoliConstDocSaveFailed'), null, 'errors');
 		}
-		header('Location: '.dol_buildpath('/doliconstdoc/const_view.php', 1).'?name='.urlencode($c->name));
+		header('Location: '.dol_buildpath('/doliconstdoc/card.php', 1).'?name='.urlencode($c->name));
 		exit;
 	} else {
 		// save
@@ -84,7 +85,7 @@ if ($action === 'save' || $action === 'delete') {
 			$ok = dolibarr_set_const($db, $c->name, $value, $dolType, 1, $note, $conf->entity);
 			if ($ok > 0) {
 				setEventMessages($langs->trans('DoliConstDocSaved', $c->name), null, 'mesgs');
-				header('Location: '.dol_buildpath('/doliconstdoc/const_view.php', 1).'?name='.urlencode($c->name));
+				header('Location: '.dol_buildpath('/doliconstdoc/card.php', 1).'?name='.urlencode($c->name));
 				exit;
 			} else {
 				setEventMessages($langs->trans('DoliConstDocSaveFailed'), null, 'errors');
@@ -142,7 +143,7 @@ print '<br><div class="center">';
 if ($formType !== 'dynamic') {
 	print '<input type="submit" class="button button-save" value="'.dol_escape_htmltag($langs->trans('Save')).'">';
 }
-print ' <a class="button button-cancel" href="'.dol_buildpath('/doliconstdoc/const_view.php', 1).'?name='.urlencode($c->name).'">'.dol_escape_htmltag($langs->trans('Cancel')).'</a>';
+print ' <a class="button button-cancel" href="'.dol_buildpath('/doliconstdoc/card.php', 1).'?name='.urlencode($c->name).'">'.dol_escape_htmltag($langs->trans('Cancel')).'</a>';
 print '</div>';
 print '</form>';
 

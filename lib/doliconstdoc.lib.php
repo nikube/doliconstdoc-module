@@ -110,7 +110,7 @@ function doliconstdoc_action_url($c)
 {
 	if ((int) $c->hidden_setting === 1) {
 		return array(
-			'href'  => dol_buildpath('/doliconstdoc/const_activate.php', 1).'?name='.urlencode($c->name),
+			'href'  => dol_buildpath('/doliconstdoc/admin/activate.php', 1).'?name='.urlencode($c->name),
 			'local' => true,
 		);
 	}

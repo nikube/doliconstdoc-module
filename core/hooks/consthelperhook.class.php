@@ -66,7 +66,7 @@ class ConstHelperHook
 			$obj = $db->fetch_object($res);
 			$count = (int) $obj->n;
 		}
-		$url = dol_buildpath('/doliconstdoc/browser.php', 1);
+		$url = dol_buildpath('/doliconstdoc/list.php', 1);
 		$this->resprints = '<div class="info" style="margin:8px 0;"><span class="fa fa-book"></span> '
 			.dol_escape_htmltag($langs->trans('DoliConstDocBannerText', $count))
 			.' <a class="butAction" style="margin-left:8px;" href="'.$url.'">'.dol_escape_htmltag($langs->trans('DoliConstDocBannerOpen')).'</a></div>';

@@ -5,7 +5,7 @@
  */
 
 /**
- * \file    const_view.php
+ * \file    card.php
  * \ingroup doliconstdoc
  * \brief   Detail page for one constant.
  */
@@ -29,7 +29,7 @@ if (!$user->hasRight('doliconstdoc', 'read') && !$user->admin) {
 
 $name = trim((string) GETPOST('name', 'alphanohtml'));
 if ($name === '') {
-	header('Location: '.dol_buildpath('/doliconstdoc/browser.php', 1));
+	header('Location: '.dol_buildpath('/doliconstdoc/list.php', 1));
 	exit;
 }
 
@@ -38,7 +38,7 @@ if ($c->fetchByName($name) <= 0) {
 	llxHeader('', $langs->trans('DoliConstDocNotFound'), '');
 	print load_fiche_titre($langs->trans('DoliConstDocNotFound'), '', 'technic');
 	print '<div class="warning">'.dol_escape_htmltag($langs->trans('DoliConstDocConstantUnknown', $name)).'</div>';
-	print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/browser.php', 1).'">'.dol_escape_htmltag($langs->trans('Back')).'</a>';
+	print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/list.php', 1).'">'.dol_escape_htmltag($langs->trans('Back')).'</a>';
 	llxFooter();
 	$db->close();
 	return;
@@ -86,7 +86,7 @@ $btnLabel = ((int) $c->hidden_setting === 1)
 	? ($state['state'] === DOLICONSTDOC_STATE_INACTIVE ? $langs->trans('DoliConstDocActivate') : $langs->trans('DoliConstDocEdit'))
 	: $langs->trans('DoliConstDocOpenNative');
 print '<a class="butAction" href="'.$action['href'].'">'.dol_escape_htmltag($btnLabel).'</a>';
-print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/browser.php', 1).'">'.dol_escape_htmltag($langs->trans('Back')).'</a>';
+print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/list.php', 1).'">'.dol_escape_htmltag($langs->trans('Back')).'</a>';
 print '</div>';
 
 llxFooter();

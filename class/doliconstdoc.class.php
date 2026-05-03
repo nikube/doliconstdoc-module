@@ -80,6 +80,14 @@ class DoliConstDoc
 			$q = $this->db->escape($filters['search']);
 			$where .= " AND (name LIKE '%".$q."%' OR purpose LIKE '%".$q."%' OR description LIKE '%".$q."%')";
 		}
+		if (!empty($filters['search_name'])) {
+			$q = $this->db->escape($filters['search_name']);
+			$where .= " AND name LIKE '%".$q."%'";
+		}
+		if (!empty($filters['search_purpose'])) {
+			$q = $this->db->escape($filters['search_purpose']);
+			$where .= " AND (purpose LIKE '%".$q."%' OR description LIKE '%".$q."%')";
+		}
 		if (!empty($filters['module'])) {
 			$where .= " AND module = '".$this->db->escape($filters['module'])."'";
 		}

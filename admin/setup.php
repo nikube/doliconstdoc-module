@@ -40,8 +40,8 @@ print '<tr><td>'.$langs->trans('DoliConstDocConstantsCount').'</td><td>'.$count.
 print '</table></div>';
 
 print '<br><div class="tabsAction">';
-print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/update.php', 1).'">'.dol_escape_htmltag($langs->trans('DoliConstDocCheckForUpdate')).'</a>';
-print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/browser.php', 1).'">'.dol_escape_htmltag($langs->trans('DoliConstDocBrowserTitle')).'</a>';
+print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/admin/update.php', 1).'">'.dol_escape_htmltag($langs->trans('DoliConstDocCheckForUpdate')).'</a>';
+print '<a class="butAction" href="'.dol_buildpath('/doliconstdoc/list.php', 1).'">'.dol_escape_htmltag($langs->trans('DoliConstDocBrowserTitle')).'</a>';
 print '</div>';
 
 llxFooter();

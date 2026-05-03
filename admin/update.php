@@ -5,14 +5,14 @@
  */
 
 /**
- * \file    update.php
+ * \file    admin/update.php
  * \ingroup doliconstdoc
- * \brief   Check + install latest doc release from GitHub.
+ * \brief   Check + install latest doc release from GitHub. Admin only.
  */
 
 $res = 0;
-if (!$res && file_exists("../../main.inc.php")) $res = @include "../../main.inc.php";
 if (!$res && file_exists("../../../main.inc.php")) $res = @include "../../../main.inc.php";
+if (!$res && file_exists("../../../../main.inc.php")) $res = @include "../../../../main.inc.php";
 if (!$res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';

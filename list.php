@@ -5,7 +5,7 @@
  */
 
 /**
- * \file    browser.php
+ * \file    list.php
  * \ingroup doliconstdoc
  * \brief   Constants browser (list + filters).
  */
@@ -27,24 +27,26 @@ if (!$user->hasRight('doliconstdoc', 'read') && !$user->admin) {
 	accessforbidden();
 }
 
-$search   = trim((string) GETPOST('search', 'alphanohtml'));
-$module   = (string) GETPOST('module', 'alphanohtml');
-$type     = (string) GETPOST('type', 'alphanohtml');
-$stateFlt = (string) GETPOST('statefilter', 'alphanohtml'); // all|active|inactive|hidden|standard
+$searchName    = trim((string) GETPOST('search_name', 'alphanohtml'));
+$searchPurpose = trim((string) GETPOST('search_purpose', 'alphanohtml'));
+$module   = (string) GETPOST('search_module', 'alphanohtml');
+$type     = (string) GETPOST('search_type', 'alphanohtml');
+$stateFlt = (string) GETPOST('search_statefilter', 'alphanohtml'); // ''|hidden|standard
 $page     = max(0, (int) GETPOST('page', 'int'));
-$limit    = (int) (GETPOST('limit', 'int') ?: $conf->liste_limit);
+$limit    = GETPOSTINT('limit') ? GETPOSTINT('limit') : 50;
 $offset   = $limit * $page;
 $sortfield = GETPOST('sortfield', 'alphanohtml') ?: 'name';
 $sortorder = GETPOST('sortorder', 'alphanohtml') ?: 'asc';
 
 if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
-	$search = ''; $module = ''; $type = ''; $stateFlt = '';
+	$searchName = ''; $searchPurpose = ''; $module = ''; $type = ''; $stateFlt = '';
 }
 
 $dao = new DoliConstDoc($db);
 
 $filters = array(
-	'search' => $search,
+	'search_name'    => $searchName,
+	'search_purpose' => $searchPurpose,
 	'module' => $module,
 	'type'   => $type,
 	'hidden_only'   => ($stateFlt === 'hidden'),
@@ -58,10 +60,11 @@ $total = $res['total'];
 llxHeader('', $langs->trans('DoliConstDocBrowserTitle'), '');
 
 $paramUrl = '';
-if ($search !== '')   $paramUrl .= '&search='.urlencode($search);
-if ($module !== '')   $paramUrl .= '&module='.urlencode($module);
-if ($type !== '')     $paramUrl .= '&type='.urlencode($type);
-if ($stateFlt !== '') $paramUrl .= '&statefilter='.urlencode($stateFlt);
+if ($searchName !== '')    $paramUrl .= '&search_name='.urlencode($searchName);
+if ($searchPurpose !== '') $paramUrl .= '&search_purpose='.urlencode($searchPurpose);
+if ($module !== '')        $paramUrl .= '&search_module='.urlencode($module);
+if ($type !== '')          $paramUrl .= '&search_type='.urlencode($type);
+if ($stateFlt !== '')      $paramUrl .= '&search_statefilter='.urlencode($stateFlt);
 
 print load_fiche_titre($langs->trans('DoliConstDocBrowserTitle'), '', 'technic');
 
@@ -87,27 +90,27 @@ print_barre_liste(
 	$limit
 );
 
-// Filters row
-print '<div class="liste_titre liste_titre_bydiv centpercent">';
-print '<div class="divsearchfield"><input type="text" class="flat maxwidth200" name="search" value="'.dol_escape_htmltag($search).'" placeholder="'.dol_escape_htmltag($langs->trans('Search')).'"></div>';
+print '<div class="div-table-responsive"><table class="tagtable nobottomiftotal liste centpercent">';
 
-print '<div class="divsearchfield"><select name="module" class="flat minwidth150">';
-print '<option value="">'.dol_escape_htmltag($langs->trans('Module')).'</option>';
+// Per-column search row (Dolibarr standard liste_titre_filter)
+print '<tr class="liste_titre_filter">';
+print '<td class="liste_titre"><input type="text" class="flat maxwidth150" name="search_name" value="'.dol_escape_htmltag($searchName).'"></td>';
+print '<td class="liste_titre"><input type="text" class="flat maxwidth200" name="search_purpose" value="'.dol_escape_htmltag($searchPurpose).'"></td>';
+print '<td class="liste_titre"><select name="search_module" class="flat maxwidth150">';
+print '<option value=""></option>';
 foreach ($dao->listModules() as $m) {
 	$sel = $m === $module ? ' selected' : '';
 	print '<option value="'.dol_escape_htmltag($m).'"'.$sel.'>'.dol_escape_htmltag($m).'</option>';
 }
-print '</select></div>';
-
-print '<div class="divsearchfield"><select name="type" class="flat minwidth100">';
-$types = array('' => $langs->trans('Type'), 'bool' => 'bool', 'int' => 'int', 'string' => 'string', 'enum' => 'enum');
+print '</select></td>';
+print '<td class="liste_titre"><select name="search_type" class="flat">';
+$types = array('' => '', 'bool' => 'bool', 'int' => 'int', 'string' => 'string', 'enum' => 'enum');
 foreach ($types as $k => $v) {
 	$sel = ($k === $type ? ' selected' : '');
 	print '<option value="'.dol_escape_htmltag($k).'"'.$sel.'>'.dol_escape_htmltag($v).'</option>';
 }
-print '</select></div>';
-
-print '<div class="divsearchfield"><select name="statefilter" class="flat minwidth150">';
+print '</select></td>';
+print '<td class="liste_titre"><select name="search_statefilter" class="flat">';
 $states = array(
 	''         => $langs->trans('DoliConstDocFilterAll'),
 	'hidden'   => $langs->trans('DoliConstDocFilterHidden'),
@@ -117,15 +120,18 @@ foreach ($states as $k => $v) {
 	$sel = ($k === $stateFlt ? ' selected' : '');
 	print '<option value="'.dol_escape_htmltag($k).'"'.$sel.'>'.dol_escape_htmltag($v).'</option>';
 }
-print '</select></div>';
+print '</select></td>';
+print '<td class="liste_titre"></td>';
+print '<td class="liste_titre right">';
+$searchpicto = function_exists('searchpicto') ? searchpicto('', '') : '';
+print '<button type="submit" class="liste_titre button_search reposition" name="button_search" value="x" title="'.dol_escape_htmltag($langs->trans('Search')).'"><span class="fa fa-search"></span></button>';
+print '<button type="submit" class="liste_titre button_removefilter reposition" name="button_removefilter" value="x" title="'.dol_escape_htmltag($langs->trans('RemoveFilter')).'"><span class="fa fa-times-circle"></span></button>';
+print '</td>';
+print '</tr>';
 
-print '<div class="divsearchfield"><button type="submit" class="button button-search" name="button_search" value="x"><span class="fa fa-search"></span></button>';
-print ' <button type="submit" class="button button-removefilter" name="button_removefilter" value="x"><span class="fa fa-times-circle"></span></button></div>';
-print '</div>';
-
-print '<div class="div-table-responsive"><table class="tagtable nobottomiftotal liste centpercent">';
 print '<tr class="liste_titre">';
 print getTitleFieldOfList($langs->trans('Name'),       0, $_SERVER['PHP_SELF'], 'name',         '', $paramUrl, '', $sortfield, $sortorder);
+print getTitleFieldOfList($langs->trans('DoliConstDocPurpose'), 0, $_SERVER['PHP_SELF'], '',     '', $paramUrl);
 print getTitleFieldOfList($langs->trans('Module'),     0, $_SERVER['PHP_SELF'], 'module',       '', $paramUrl, '', $sortfield, $sortorder);
 print getTitleFieldOfList($langs->trans('Type'),       0, $_SERVER['PHP_SELF'], 'type',         '', $paramUrl, '', $sortfield, $sortorder);
 print getTitleFieldOfList($langs->trans('Status'),     0, $_SERVER['PHP_SELF'], '',             '', $paramUrl);
@@ -134,7 +140,7 @@ print getTitleFieldOfList($langs->trans('Action'),     0, $_SERVER['PHP_SELF'], 
 print '</tr>';
 
 if (!$rows) {
-	print '<tr class="oddeven"><td colspan="6" class="opacitymedium">'.dol_escape_htmltag($langs->trans('DoliConstDocNoResult')).'</td></tr>';
+	print '<tr class="oddeven"><td colspan="7" class="opacitymedium">'.dol_escape_htmltag($langs->trans('DoliConstDocNoResult')).'</td></tr>';
 }
 
 foreach ($rows as $c) {
@@ -145,11 +151,13 @@ foreach ($rows as $c) {
 	if ($stateFlt === 'active' && $state['state'] === DOLICONSTDOC_STATE_INACTIVE) continue;
 	if ($stateFlt === 'inactive' && $state['state'] !== DOLICONSTDOC_STATE_INACTIVE) continue;
 
-	$detailHref = dol_buildpath('/doliconstdoc/const_view.php', 1).'?name='.urlencode($c->name);
+	$detailHref = dol_buildpath('/doliconstdoc/card.php', 1).'?name='.urlencode($c->name);
 	$hiddenBadge = ((int) $c->hidden_setting === 1) ? ' <span class="badge badge-status0" title="hidden">H</span>' : '';
 
 	print '<tr class="oddeven">';
 	print '<td><a href="'.$detailHref.'"><code>'.dol_escape_htmltag($c->name).'</code></a>'.$hiddenBadge.'</td>';
+	$purpose = (string) $c->purpose;
+	print '<td class="tdoverflowmax300" title="'.dol_escape_htmltag($purpose).'">'.dol_escape_htmltag(dol_trunc($purpose, 100)).'</td>';
 	print '<td>'.dol_escape_htmltag((string) $c->module).'</td>';
 	print '<td>'.dol_escape_htmltag((string) $c->type).'</td>';
 	print '<td><span class="badge '.dol_escape_htmltag($state['css']).'">'.dol_escape_htmltag($langs->trans('DoliConstDocState_'.$state['state'])).'</span></td>';
