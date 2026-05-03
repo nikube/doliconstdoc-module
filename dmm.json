@@ -6,7 +6,7 @@
   "author": "Anatole Consulting",
   "url": "https://github.com/nikube/doliconstdoc-module",
   "license": "GPL-3.0-or-later",
-  "dolibarr_module_id": 500104,
+  "dolibarr_module_id": 185154,
   "branch": "main",
   "branch_dev": "develop",
   "compatibility": {

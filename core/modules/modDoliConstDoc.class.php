@@ -29,7 +29,8 @@ class modDoliConstDoc extends DolibarrModules
 
 		$this->db = $db;
 
-		$this->numero = 500104;
+		// Reserved range 185150–185169 (Anatole Conseil) — see https://wiki.dolibarr.org/index.php/List_of_modules_id
+		$this->numero = 185154;
 
 		$this->rights_class = 'doliconstdoc';
 		$this->family = "technic";
@@ -84,7 +85,7 @@ class modDoliConstDoc extends DolibarrModules
 		// Permissions
 		$this->rights = array();
 		$r = 0;
-		$this->rights[$r][0] = 5010400;
+		$this->rights[$r][0] = 1851540;
 		$this->rights[$r][1] = 'Read DoliConstDoc catalog and activate hidden settings';
 		$this->rights[$r][3] = 0;
 		$this->rights[$r][4] = 'read';
