@@ -163,10 +163,10 @@ foreach ($rows as $c) {
 	print '<td><span class="badge '.dol_escape_htmltag($state['css']).'">'.dol_escape_htmltag($langs->trans('DoliConstDocState_'.$state['state'])).'</span></td>';
 	print '<td>'.($state['value'] !== null ? '<code>'.dol_escape_htmltag(dol_trunc((string) $state['value'], 60)).'</code>' : '').'</td>';
 	$btnLabel = ((int) $c->hidden_setting === 1)
-		? ($state['state'] === DOLICONSTDOC_STATE_INACTIVE ? $langs->trans('DoliConstDocActivate') : $langs->trans('DoliConstDocEdit'))
-		: $langs->trans('DoliConstDocOpenNative');
+		? ($state['state'] === DOLICONSTDOC_STATE_INACTIVE ? $langs->trans('DoliConstDocBtnOn') : $langs->trans('DoliConstDocBtnEdit'))
+		: $langs->trans('DoliConstDocBtnOpen');
 	$cls = $action['local'] ? 'button-add' : 'button';
-	print '<td class="right"><a class="butAction '.$cls.'" href="'.$action['href'].'">'.dol_escape_htmltag($btnLabel).'</a></td>';
+	print '<td class="right nowraponall"><a class="butAction '.$cls.'" href="'.$action['href'].'">'.dol_escape_htmltag($btnLabel).'</a></td>';
 	print '</tr>';
 }
 
