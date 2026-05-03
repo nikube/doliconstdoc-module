@@ -1,0 +1,70 @@
+; DoliConstDoc — English (US)
+; Format: KEY=Value
+
+ModuleDoliConstDocName=DoliConstDoc
+ModuleDoliConstDocDesc=Browse and activate Dolibarr global constants with embedded documentation.
+
+DoliConstDoc=DoliConstDoc
+DoliConstDocBrowser=Browser
+DoliConstDocBrowserTitle=Constants browser
+DoliConstDocConstants=Constants
+DoliConstDocSetup=DoliConstDoc setup
+DoliConstDocAbout=About DoliConstDoc
+DoliConstDocAboutText=Browser, search and hidden-settings activator for Dolibarr global constants. The catalog is embedded in the module and can be refreshed from GitHub releases.
+
+DoliConstDocFilterAll=All states
+DoliConstDocFilterActive=Active only
+DoliConstDocFilterInactive=Inactive only
+DoliConstDocFilterHidden=Hidden only
+DoliConstDocFilterStandard=Standard only
+
+DoliConstDocState_inactive=Not set
+DoliConstDocState_default=Active (default)
+DoliConstDocState_custom=Active
+DoliConstDocState_disabled=Disabled
+
+DoliConstDocActivate=Activate
+DoliConstDocEdit=Edit
+DoliConstDocDeactivate=Deactivate
+DoliConstDocOpenNative=Open native page
+DoliConstDocActivateTitle=Configure %s
+DoliConstDocConfirmDelete=Remove %s from configuration?
+DoliConstDocSaved=%s saved.
+DoliConstDocDeactivated=%s removed.
+DoliConstDocSaveFailed=Save failed.
+DoliConstDocDynamicWarning=This constant is computed dynamically and cannot be set from the UI.
+DoliConstDocCannotEditDynamic=Dynamic constants cannot be edited.
+
+DoliConstDocPurpose=Purpose
+DoliConstDocDescription=Description
+DoliConstDocImpact=Impact
+DoliConstDocCurrentValue=Current value
+DoliConstDocDefault=Default
+DoliConstDocPossibleValues=Possible values
+DoliConstDocConfPhpWiring=conf.php wiring
+DoliConstDocAdminUIFiles=Admin UI files
+DoliConstDocHidden=Hidden setting
+DoliConstDocGuessed=guessed
+DoliConstDocConfidence=Confidence
+DoliConstDocDocQuality=Doc quality
+DoliConstDocNotSet=Not set
+DoliConstDocNotFound=Constant not found
+DoliConstDocConstantUnknown=Unknown constant: %s
+DoliConstDocNoResult=No constants match these filters.
+
+DoliConstDocVersion=Embedded doc version
+DoliConstDocVersionUnknown=No version recorded
+DoliConstDocVersionInstalled=Installed version
+DoliConstDocVersionLatest=Latest available
+DoliConstDocConstantsCount=Constants in catalog
+DoliConstDocCheckForUpdate=Check for updates
+DoliConstDocUpdate=Update doc catalog
+DoliConstDocInstallUpdate=Download and install %s
+DoliConstDocUpToDate=Catalog up to date.
+DoliConstDocUpdateNoAsset=No SQL asset published in latest release.
+DoliConstDocUpdateDownloadFailed=Download failed.
+DoliConstDocUpdateCorrupt=Downloaded file looks truncated, install aborted.
+DoliConstDocUpdateInstalled=Catalog updated to %s.
+
+DoliConstDocBannerText=DoliConstDoc — explore the documentation of %s Dolibarr constants.
+DoliConstDocBannerOpen=Open

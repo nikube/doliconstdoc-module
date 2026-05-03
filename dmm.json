@@ -1,0 +1,23 @@
+{
+  "schema_version": "1",
+  "module_id": "doliconstdoc",
+  "name": "DoliConstDoc",
+  "description": "Browse, search and activate Dolibarr global constants with embedded documentation. Hidden settings become discoverable; standard ones link back to the native admin pages.",
+  "author": "Anatole Consulting",
+  "url": "https://github.com/nikube/doliconstdoc-module",
+  "license": "GPL-3.0-or-later",
+  "dolibarr_module_id": 500104,
+  "branch": "main",
+  "branch_dev": "develop",
+  "compatibility": {
+    "0.x": {
+      "dolibarr_min": "21.0.0",
+      "dolibarr_max": "24.*",
+      "php_min": "7.4"
+    }
+  },
+  "dependencies": {
+    "modules": [],
+    "php_extensions": []
+  }
+}

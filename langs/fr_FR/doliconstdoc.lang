@@ -1,0 +1,70 @@
+; DoliConstDoc — Français
+; Format: KEY=Valeur
+
+ModuleDoliConstDocName=DoliConstDoc
+ModuleDoliConstDocDesc=Parcourez et activez les constantes globales Dolibarr avec leur documentation embarquée.
+
+DoliConstDoc=DoliConstDoc
+DoliConstDocBrowser=Browser
+DoliConstDocBrowserTitle=Navigateur de constantes
+DoliConstDocConstants=Constantes
+DoliConstDocSetup=Configuration DoliConstDoc
+DoliConstDocAbout=À propos de DoliConstDoc
+DoliConstDocAboutText=Navigateur, recherche et activateur des hidden settings pour les constantes globales de Dolibarr. Le catalogue est embarqué et peut être rafraîchi depuis les Releases GitHub.
+
+DoliConstDocFilterAll=Tous les états
+DoliConstDocFilterActive=Actives uniquement
+DoliConstDocFilterInactive=Inactives uniquement
+DoliConstDocFilterHidden=Hidden uniquement
+DoliConstDocFilterStandard=Standard uniquement
+
+DoliConstDocState_inactive=Non configurée
+DoliConstDocState_default=Active (défaut)
+DoliConstDocState_custom=Active
+DoliConstDocState_disabled=Désactivée
+
+DoliConstDocActivate=Activer
+DoliConstDocEdit=Modifier
+DoliConstDocDeactivate=Désactiver
+DoliConstDocOpenNative=Ouvrir la page native
+DoliConstDocActivateTitle=Configurer %s
+DoliConstDocConfirmDelete=Retirer %s de la configuration ?
+DoliConstDocSaved=%s enregistrée.
+DoliConstDocDeactivated=%s retirée.
+DoliConstDocSaveFailed=Échec de l'enregistrement.
+DoliConstDocDynamicWarning=Cette constante est calculée dynamiquement et ne peut pas être définie depuis l'UI.
+DoliConstDocCannotEditDynamic=Les constantes dynamiques ne peuvent pas être éditées.
+
+DoliConstDocPurpose=Objet
+DoliConstDocDescription=Description
+DoliConstDocImpact=Impact
+DoliConstDocCurrentValue=Valeur actuelle
+DoliConstDocDefault=Défaut
+DoliConstDocPossibleValues=Valeurs possibles
+DoliConstDocConfPhpWiring=Câblage conf.php
+DoliConstDocAdminUIFiles=Fichiers UI admin
+DoliConstDocHidden=Hidden setting
+DoliConstDocGuessed=deviné
+DoliConstDocConfidence=Confiance
+DoliConstDocDocQuality=Qualité doc
+DoliConstDocNotSet=Non définie
+DoliConstDocNotFound=Constante introuvable
+DoliConstDocConstantUnknown=Constante inconnue : %s
+DoliConstDocNoResult=Aucune constante ne correspond à ces filtres.
+
+DoliConstDocVersion=Version de la doc embarquée
+DoliConstDocVersionUnknown=Aucune version enregistrée
+DoliConstDocVersionInstalled=Version installée
+DoliConstDocVersionLatest=Dernière disponible
+DoliConstDocConstantsCount=Constantes au catalogue
+DoliConstDocCheckForUpdate=Vérifier les mises à jour
+DoliConstDocUpdate=Mise à jour du catalogue
+DoliConstDocInstallUpdate=Télécharger et installer %s
+DoliConstDocUpToDate=Catalogue à jour.
+DoliConstDocUpdateNoAsset=Aucun asset SQL publié dans la dernière release.
+DoliConstDocUpdateDownloadFailed=Échec du téléchargement.
+DoliConstDocUpdateCorrupt=Le fichier téléchargé semble tronqué, installation annulée.
+DoliConstDocUpdateInstalled=Catalogue mis à jour vers %s.
+
+DoliConstDocBannerText=DoliConstDoc — explorez la documentation des %s constantes Dolibarr.
+DoliConstDocBannerOpen=Ouvrir
