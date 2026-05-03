@@ -121,7 +121,8 @@ foreach ($states as $k => $v) {
 	print '<option value="'.dol_escape_htmltag($k).'"'.$sel.'>'.dol_escape_htmltag($v).'</option>';
 }
 print '</select></td>';
-print '<td class="liste_titre"></td>';
+print '<td class="liste_titre"></td>'; // Status (no filter)
+print '<td class="liste_titre"></td>'; // Value
 print '<td class="liste_titre right">';
 $searchpicto = function_exists('searchpicto') ? searchpicto('', '') : '';
 print '<button type="submit" class="liste_titre button_search reposition" name="button_search" value="x" title="'.dol_escape_htmltag($langs->trans('Search')).'"><span class="fa fa-search"></span></button>';
@@ -134,13 +135,14 @@ print getTitleFieldOfList($langs->trans('Name'),       0, $_SERVER['PHP_SELF'], 
 print getTitleFieldOfList($langs->trans('DoliConstDocPurpose'), 0, $_SERVER['PHP_SELF'], '',     '', $paramUrl);
 print getTitleFieldOfList($langs->trans('Module'),     0, $_SERVER['PHP_SELF'], 'module',       '', $paramUrl, '', $sortfield, $sortorder);
 print getTitleFieldOfList($langs->trans('Type'),       0, $_SERVER['PHP_SELF'], 'type',         '', $paramUrl, '', $sortfield, $sortorder);
+print getTitleFieldOfList($langs->trans('DoliConstDocHidden'), 0, $_SERVER['PHP_SELF'], 'hidden_setting', '', $paramUrl, '', $sortfield, $sortorder);
 print getTitleFieldOfList($langs->trans('Status'),     0, $_SERVER['PHP_SELF'], '',             '', $paramUrl);
 print getTitleFieldOfList($langs->trans('Value'),      0, $_SERVER['PHP_SELF'], '',             '', $paramUrl);
 print getTitleFieldOfList($langs->trans('Action'),     0, $_SERVER['PHP_SELF'], '',             '', $paramUrl, 'class="right"');
 print '</tr>';
 
 if (!$rows) {
-	print '<tr class="oddeven"><td colspan="7" class="opacitymedium">'.dol_escape_htmltag($langs->trans('DoliConstDocNoResult')).'</td></tr>';
+	print '<tr class="oddeven"><td colspan="8" class="opacitymedium">'.dol_escape_htmltag($langs->trans('DoliConstDocNoResult')).'</td></tr>';
 }
 
 foreach ($rows as $c) {
@@ -152,14 +154,17 @@ foreach ($rows as $c) {
 	if ($stateFlt === 'inactive' && $state['state'] !== DOLICONSTDOC_STATE_INACTIVE) continue;
 
 	$detailHref = dol_buildpath('/doliconstdoc/card.php', 1).'?name='.urlencode($c->name);
-	$hiddenBadge = ((int) $c->hidden_setting === 1) ? ' <span class="badge badge-status0" title="hidden">H</span>' : '';
 
 	print '<tr class="oddeven">';
-	print '<td><a href="'.$detailHref.'"><code>'.dol_escape_htmltag($c->name).'</code></a>'.$hiddenBadge.'</td>';
+	print '<td><a href="'.$detailHref.'"><code>'.dol_escape_htmltag($c->name).'</code></a></td>';
 	$purpose = (string) $c->purpose;
 	print '<td class="tdoverflowmax300" title="'.dol_escape_htmltag($purpose).'">'.dol_escape_htmltag(dol_trunc($purpose, 100)).'</td>';
 	print '<td>'.dol_escape_htmltag((string) $c->module).'</td>';
 	print '<td>'.dol_escape_htmltag((string) $c->type).'</td>';
+	$hiddenCell = ((int) $c->hidden_setting === 1)
+		? '<span class="badge badge-status0" title="'.dol_escape_htmltag($langs->trans('DoliConstDocHidden')).'">'.dol_escape_htmltag($langs->trans('Yes')).'</span>'
+		: '<span class="opacitymedium">—</span>';
+	print '<td class="center">'.$hiddenCell.'</td>';
 	print '<td><span class="badge '.dol_escape_htmltag($state['css']).'">'.dol_escape_htmltag($langs->trans('DoliConstDocState_'.$state['state'])).'</span></td>';
 	print '<td>'.($state['value'] !== null ? '<code>'.dol_escape_htmltag(dol_trunc((string) $state['value'], 60)).'</code>' : '').'</td>';
 	$btnLabel = ((int) $c->hidden_setting === 1)
