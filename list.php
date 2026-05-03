@@ -166,7 +166,7 @@ foreach ($rows as $c) {
 		? ($state['state'] === DOLICONSTDOC_STATE_INACTIVE ? $langs->trans('DoliConstDocBtnOn') : $langs->trans('DoliConstDocBtnEdit'))
 		: $langs->trans('DoliConstDocBtnOpen');
 	$cls = $action['local'] ? 'button-add' : 'button';
-	print '<td class="right nowraponall"><a class="butAction '.$cls.'" href="'.$action['href'].'">'.dol_escape_htmltag($btnLabel).'</a></td>';
+	print '<td class="right nowraponall"><a class="butAction '.$cls.'" style="display:inline-block;min-width:70px;text-align:center;" href="'.$action['href'].'">'.dol_escape_htmltag($btnLabel).'</a></td>';
 	print '</tr>';
 }
 
